@@ -3,7 +3,7 @@ import subprocess
 
 import numpy as np
 import tensorflow as tf
-from keras.backend.tensorflow_backend import set_session
+from tensorflow.python.keras.backend import set_session
 
 from cakechat.utils.logger import get_logger
 
@@ -44,14 +44,14 @@ def init_keras(hvd=None):
     """
 
     init_cuda_env()
-    config = tf.ConfigProto()
+    config = tf.compat.v1.ConfigProto()
 
     if hvd:
         hvd.init()
         config.gpu_options.allow_growth = True
         config.gpu_options.visible_device_list = str(hvd.local_rank())
 
-    set_session(tf.Session(config=config))
+    set_session(tf.compat.v1.Session(config=config))
 
 
 def set_keras_tf_session(gpu_memory_fraction):
